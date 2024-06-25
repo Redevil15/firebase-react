@@ -28,10 +28,19 @@ const SendCode = () => {
     console.log('RecaptchaVerifier initialized:', window.recaptchaVerifier);
   }, []);
 
-  const sendVerificationCode = () => {
-    console.log("Phone number:", phoneNumber);
+  const formatPhoneNumber = (number) => {
+    // Add country code if not present
+    if (!number.startsWith("+52")) {
+      number = "+52" + number;
+    }
+    return number;
+  };
 
-    signInWithPhoneNumber(auth, phoneNumber, window.recaptchaVerifier)
+  const sendVerificationCode = () => {
+    const formattedPhoneNumber = formatPhoneNumber(phoneNumber);
+    console.log("Formatted phone number:", formattedPhoneNumber);
+
+    signInWithPhoneNumber(auth, formattedPhoneNumber, window.recaptchaVerifier)
       .then((confirmationResult) => {
         window.confirmationResult = confirmationResult;
         console.log("Confirmation result:", confirmationResult);
